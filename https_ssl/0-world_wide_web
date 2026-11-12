@@ -1,4 +1,3 @@
-
 #!/usr/bin/env bash
 # Display information about a domain's subdomains
 
@@ -7,9 +6,11 @@ domain=$1
 display_subdomain() {
     subdomain=$1
 
-    record=$(dig +noall +answer "${subdomain}.${domain}" | awk 'NR == 1 {print $4, $5}')
+    record=$(dig +noall +answer "${subdomain}.${domain}" |
+        awk 'NR == 1 {print $4, $5}')
 
-    read -r record_type destination <<< "$record"
+    record_type=$(echo "$record" | awk '{print $1}')
+    destination=$(echo "$record" | awk '{print $2}')
 
     echo "The subdomain ${subdomain} is a ${record_type} record and points to ${destination}"
 }
